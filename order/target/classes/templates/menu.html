@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <title>Menu</title>
+    <style>
+        .sidenav {
+  width: 160px;
+  position: fixed;
+  height: 100%;
+  background-color: black;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: rgb(255, 206, 235);
+  display: block;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.separate {
+   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+   text-align: left;
+   width: 100%;
+   border-collapse: separate;
+   border-spacing: 5px;
+   background: #ECE9E0;
+   color: #656665;
+   border: 16px solid #ECE9E0;
+   border-radius: 20px;
+}
+.separate th {
+   font-size: 18px;
+   padding: 10px;
+}
+.separate td {
+   background: #F5D7BF;
+   padding: 10px;
+}
+.section {
+  margin-left: 160px;
+  background-color:rgb(255, 206, 235);
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+    </style>
+</head>
+<body bgcolor="#ffceeb">
+<div class="sidenav">
+    <a th:href="@{/admin/menu/new}">Добавить блюдо</a>
+    <a th:href="@{/admin}">Назад</a>
+    <a th:href="@{/logout}">Выйти</a>
+</div>
+<div class="section">
+    <h1> Меню </h1>
+    <table class="separate">
+        <tr>
+            <th>Название</th>
+            <th>Стоимость</th>
+            <th>Состав</th>
+            <th> </th>
+        </tr>
+        <tbody>
+        <tr th:each="dish: ${menu}">
+            <td th:text="${dish.name}"></td>
+            <td th:text="${dish.cost}"></td>
+            <td th:text="${dish.composition}"></td>
+            <td><a th:href="@{'/admin/menu/'+${dish.id}}" class="button">Удалить</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
