@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <title>Orders</title>
+    <style>
+        .sidenav {
+  width: 160px;
+  position: fixed;
+  background-color: black;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: rgb(255, 206, 235);
+  display: block;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.separate {
+   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+   text-align: left;
+   width: 100%;
+   border-collapse: separate;
+   border-spacing: 5px;
+   background: #ECE9E0;
+   color: #656665;
+   border: 16px solid #ECE9E0;
+   border-radius: 20px;
+}
+.separate th {
+   font-size: 18px;
+   padding: 10px;
+}
+.separate td {
+   background: #F5D7BF;
+   padding: 10px;
+}
+.section {
+  margin-left: 160px;
+
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+    </style>
+</head>
+<body bgcolor="black">
+<div class="sidenav">
+    <a th:href="@{/home}">Назад</a>
+    <a th:href="@{/logout}">Выйти</a>
+</div>
+<div class="section">
+    <h1> Заказы </h1>
+    <table class="separate">
+        <tr>
+            <th>Название</th>
+            <th>Состав</th>
+            <th>Статус</th>
+        </tr>
+        <tbody>
+        <tr th:each="order: ${orders}">
+            <td th:text="${order.name}"></td>
+            <td th:text="${order.composition}"></td>
+            <td>
+                <form method="post" role="form" th:action="@{'/orders/'+${order.id}}">
+                    <select class="form-control" id="role" th:name="status" style="font-size=14px">
+                        <option th:value="${order.status}" th:text="${order.status}"></option>
+                        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+                    </select>
+                    <input type="submit" class="button button1" style="font-size : 14px; width: 80px; height: 20px;padding:2px 4px" value="Сохранить">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

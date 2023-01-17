@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="style2.css">
+  <title>Users</title>
+  <style>
+        .sidenav {
+  width: 160px;
+  position: fixed;
+  height: 100%;
+  background-color: black;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: rgb(255, 206, 235);
+  display: block;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.separate {
+   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+   text-align: left;
+   width: 100%;
+   border-collapse: separate;
+   border-spacing: 5px;
+   background: #ECE9E0;
+   color: #656665;
+   border: 16px solid #ECE9E0;
+   border-radius: 20px;
+}
+.separate th {
+   font-size: 18px;
+   padding: 10px;
+}
+.separate td {
+   background: #F5D7BF;
+   padding: 10px;
+}
+.section {
+  margin-left: 160px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+    </style>
+</head>
+<body bgcolor="seashell">
+<div class="sidenav">
+  <a th:href="@{/admin}">Назад</a>
+  <a th:href="@{/logout}">Выйти</a>
+</div>
+<div class="section">
+  <h1> Пользователи </h1>
+  <table class="separate">
+    <tr>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Email</th>
+      <th>Роль</th>
+      <th> </th>
+    </tr>
+    <tbody>
+    <tr th:each="user: ${users}">
+      <td th:text="${user.firstName}"></td>
+      <td th:text="${user.lastName}"></td>
+      <td th:text="${user.Email}"></td>
+      <td th:text="${user.role_name}"></td>
+      <td><a th:href="@{'/admin/users/'+${user.id}}" class="button">Редактировать роль</a></td>
+      <td>
+        <form method="post" role="form" th:action="@{/admin/users/save}">
+          <select class="form-control" id="role">
+            <option value="0">select role</option>
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+          </select>
+          <input type="hidden" value="${user.Email}" name="email">
+          <input type="submit" class="button button1" value="Сохранить">
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
