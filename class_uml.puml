@@ -1,0 +1,225 @@
+@startuml
+interface kurswork.order.service.OrderService {
+~ Order saveOrder(OrderDto)
+~ Optional<Order> findById(Long)
+~ List<OrderDto> findAllOrders()
+}
+class kurswork.order.security.CustomUserDetailsService {
+- UserRepository userRepository
++ UserDetails loadUserByUsername(String)
+- Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role>)
+}
+interface kurswork.order.repository.OrderRepository {
+}
+interface kurswork.order.repository.UserRepository {
+~ User findByEmail(String)
+}
+interface kurswork.order.service.DishService {
+~ Dish saveDish(DishDto)
+~ Dish findByName(String)
+~ List<DishDto> findAllDish()
+}
+class kurswork.order.config.SpringSecurity {
+- UserDetailsService userDetailsService
++ {static} PasswordEncoder passwordEncoder()
++ SecurityFilterChain filterChain(HttpSecurity)
++ void configureGlobal(AuthenticationManagerBuilder)
+}
+class kurswork.order.OrderApplication {
++ {static} void main(String[])
+}
+class kurswork.order.dto.DishDto {
+- Long id
+- String name
+- String cost
+- String composition
++ Long getId()
++ String getComposition()
++ String getCost()
++ String getName()
++ void setComposition(String)
++ void setCost(String)
++ void setId(Long)
++ void setName(String)
+}
+class kurswork.order.controller.IndexController {
+- {static} String PATH
++ String getErrorPath()
+}
+enum kurswork.order.entity.Status {
++  Process
++  Ready
++  Adopted
+}
+class kurswork.order.controller.DishController {
+- DishRepository dishRepository
+- DishService dishService
+- OrderRepository orderRepository
+- OrderService orderService
++ String menuShow(Model)
++ String deleteDish(Dish)
++ String newDish(Model)
++ String menu(Model)
++ String orders(Model)
++ String newDishSave(DishDto,BindingResult,Model)
++ String userEdit(Order,String)
++ String orderSave(String[])
+}
+class kurswork.order.dto.OrderDto {
+- Long id
+- String name
+- String composition
+- String status
++ Long getId()
++ String getComposition()
++ String getName()
++ void setComposition(String)
++ void setId(Long)
++ void setName(String)
++ String getStatus()
++ void setStatus(String)
+}
+interface kurswork.order.service.UserService {
+~ User saveUser(UserDto)
+~ User findByEmail(String)
+~ List<UserDto> findAllUsers()
+}
+class kurswork.order.entity.Dish {
+- {static} long serialVersionUID
+- Long id
+- String name
+- String cost
+- String composition
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ String getCost()
++ void setCost(String)
++ String getComposition()
++ void setComposition(String)
+}
+class kurswork.order.service.OrderServiceImpl {
+- OrderRepository orderRepository
++ Order saveOrder(OrderDto)
++ Optional<Order> findById(Long)
++ List<OrderDto> findAllOrders()
+- OrderDto convertEntityToDto(Order)
+}
+class kurswork.order.service.DishServiceImpl {
+- DishRepository dishRepository
++ Dish saveDish(DishDto)
++ Dish findByName(String)
++ List<DishDto> findAllDish()
+- DishDto convertEntityToDto(Dish)
+}
+class kurswork.order.entity.Role {
+- Long id
+- String name
+- List<User> users
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ List<User> getUsers()
++ void setUsers(List<User>)
+}
+interface kurswork.order.repository.RoleRepository {
+~ Role findByName(String)
+}
+class kurswork.order.dto.UserDto {
+- Long id
+- String firstName
+- String lastName
+- String email
+- String password
+- List<Role> roles
+- String role_name
++ Long getId()
++ void setId(Long)
++ String getFirstName()
++ void setFirstName(String)
++ String getLastName()
++ void setLastName(String)
++ String getEmail()
++ void setEmail(String)
++ String getPassword()
++ void setPassword(String)
++ List<Role> getRoles()
++ void setRoles(List<Role>)
+}
+class kurswork.order.entity.Order {
+- {static} long serialVersionUID
+- Long id
+- String name
+- String composition
+- String status
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ String getComposition()
++ void setComposition(String)
++ String getStatus()
++ void setStatus(String)
+}
+class kurswork.order.service.UserServiceImpl {
+- UserRepository userRepository
+- RoleRepository roleRepository
+- PasswordEncoder passwordEncoder
++ User saveUser(UserDto)
++ User findByEmail(String)
++ List<UserDto> findAllUsers()
+- UserDto convertEntityToDto(User)
+- Role checkRoleExist()
+}
+class kurswork.order.entity.User {
+- {static} long serialVersionUID
+- Long id
+- String name
+- String email
+- String password
+- List<Role> roles
+- String role_name
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ String getEmail()
++ void setEmail(String)
++ String getPassword()
++ void setPassword(String)
++ List<Role> getRoles()
++ void setRoles(List<Role>)
++ String getRole_name()
++ void setRole_name(String)
+}
+interface kurswork.order.repository.DishRepository {
+~ Dish findByName(String)
+}
+class kurswork.order.controller.AuthController {
+- UserService userService
+- UserRepository userRepository
+- RoleRepository roleRepository
++ String home()
++ String home1()
++ String admin()
++ String start()
++ String loginForm()
++ String showRegistrationForm(Model)
++ String listRegisteredUsers(Model)
++ String userEdit(User,String)
++ String registration(UserDto,BindingResult,Model)
+}
+
+
+org.springframework.security.core.userdetails.UserDetailsService <|.. kurswork.order.security.CustomUserDetailsService
+org.springframework.data.jpa.repository.JpaRepository <|-- kurswork.order.repository.OrderRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- kurswork.order.repository.UserRepository
+org.springframework.boot.web.servlet.error.ErrorController <|.. kurswork.order.controller.IndexController
+kurswork.order.service.OrderService <|.. kurswork.order.service.OrderServiceImpl
+kurswork.order.service.DishService <|.. kurswork.order.service.DishServiceImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- kurswork.order.repository.RoleRepository
+kurswork.order.service.UserService <|.. kurswork.order.service.UserServiceImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- kurswork.order.repository.DishRepository
+@enduml
